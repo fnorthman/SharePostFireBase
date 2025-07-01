@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ncorp.sharepost.databinding.FragmentFeedBinding
 import com.ramotion.circlemenu.CircleMenuView
@@ -14,9 +15,11 @@ class FeedFragment : Fragment() {
 	private var _binding: FragmentFeedBinding? = null
 	private val binding get() = _binding!!
 
-	private var dX = 0f
-	private var dY = 0f
 	private var isMenuOpen = false
+
+	private var maxX = 0f
+	private var maxY = 0f
+	private val edgePadding = 16f  // dp cinsinden kenar boşluğu, istersen dp->px dönüştür
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -30,47 +33,74 @@ class FeedFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		// Menü açma kapama toggle fonksiyonu
-		fun toggleMenu() {
-			if (isMenuOpen) {
-				binding.circleMenu.close(true)  // menüyü kapat
-				isMenuOpen = false
-			} else {
-				binding.circleMenu.open(true)   // menüyü aç
-				isMenuOpen = true
+		binding.dragContainer.setOnClickListener { println("dragcontainer") }
+		binding.dragOverlay.setOnClickListener {println("dragoverlay") }
+
+
+		binding.root.post {
+			val parentWidth = binding.root.width
+			val parentHeight = binding.root.height
+			val containerWidth = binding.dragContainer.width
+			val containerHeight = binding.dragContainer.height
+
+			maxX = (parentWidth - containerWidth - edgePadding).coerceAtLeast(edgePadding)
+			maxY = (parentHeight - containerHeight - edgePadding).coerceAtLeast(edgePadding)
+		}
+
+		binding.circleMenu.eventListener = object : CircleMenuView.EventListener() {
+			override fun onButtonClickAnimationEnd(view: CircleMenuView, index: Int) {
+				when (index) {
+					0 -> Toast.makeText(requireContext(), "Buton 1 tıklandı", Toast.LENGTH_SHORT).show()
+					1 -> Toast.makeText(requireContext(), "Buton 2 tıklandı", Toast.LENGTH_SHORT).show()
+					else -> Toast.makeText(requireContext(), "Buton $index tıklandı", Toast.LENGTH_SHORT).show()
+				}
 			}
 		}
 
-		// Dokunma işlemi
 		binding.dragOverlay.setOnTouchListener(object : View.OnTouchListener {
+
+
 			private var lastRawX = 0f
 			private var lastRawY = 0f
+			private var isDragging = false
 
 			override fun onTouch(v: View, event: MotionEvent): Boolean {
-				val parent = binding.root
-				when (event.actionMasked) {
+				println("dragoverlay")
+				when(event.actionMasked) {
+
 					MotionEvent.ACTION_DOWN -> {
 						lastRawX = event.rawX
 						lastRawY = event.rawY
+						isDragging = false
 						return true
 					}
 					MotionEvent.ACTION_MOVE -> {
 						val dx = event.rawX - lastRawX
 						val dy = event.rawY - lastRawY
 
-						val newX = (binding.dragContainer.x + dx).coerceIn(0f, (parent.width - binding.dragContainer.width).toFloat())
-						val newY = (binding.dragContainer.y + dy).coerceIn(0f, (parent.height - binding.dragContainer.height).toFloat())
+						if (dx*dx + dy*dy > 16) {  // hareket eşiği
+							isDragging = true
+							val newX = (binding.dragContainer.x + dx).coerceIn(edgePadding, maxX)
+							val newY = (binding.dragContainer.y + dy).coerceIn(edgePadding, maxY)
+							binding.dragContainer.x = newX
+							binding.dragContainer.y = newY
 
-						binding.dragContainer.x = newX
-						binding.dragContainer.y = newY
-
-						lastRawX = event.rawX
-						lastRawY = event.rawY
-
+							lastRawX = event.rawX
+							lastRawY = event.rawY
+						}
 						return true
 					}
 					MotionEvent.ACTION_UP -> {
-						toggleMenu()
+						if (!isDragging) {
+							// Tıklama ise menüyü aç/kapa
+							if (isMenuOpen) {
+								binding.circleMenu.close(true)
+								isMenuOpen = false
+							} else {
+								binding.circleMenu.open(true)
+								isMenuOpen = true
+							}
+						}
 						return true
 					}
 					else -> return false
@@ -84,4 +114,3 @@ class FeedFragment : Fragment() {
 		_binding = null
 	}
 }
-
