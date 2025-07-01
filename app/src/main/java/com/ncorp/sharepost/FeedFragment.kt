@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.ncorp.sharepost.databinding.FragmentFeedBinding
 import com.ramotion.circlemenu.CircleMenuView
+import kotlin.math.log
 
 class FeedFragment : Fragment() {
 
@@ -33,10 +35,17 @@ class FeedFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		binding.dragContainer.setOnClickListener { println("dragcontainer") }
-		binding.dragOverlay.setOnClickListener {println("dragoverlay") }
+		/*binding.dragContainer.setOnClickListener { println("dragcontainer") }
+		binding.dragOverlay.setOnClickListener { println("dragoverlay") }*/
 
-
+		fun uploadPage(view: View){
+			val action=FeedFragmentDirections.actionFeedFragmentToUploadFragment()
+			Navigation.findNavController(view).navigate(action)
+		}
+		fun loginPage(view: View){
+			val action=FeedFragmentDirections.actionFeedFragmentToLoginFragment()
+			Navigation.findNavController(view).navigate(action)
+		}
 		binding.root.post {
 			val parentWidth = binding.root.width
 			val parentHeight = binding.root.height
@@ -50,12 +59,20 @@ class FeedFragment : Fragment() {
 		binding.circleMenu.eventListener = object : CircleMenuView.EventListener() {
 			override fun onButtonClickAnimationEnd(view: CircleMenuView, index: Int) {
 				when (index) {
-					0 -> Toast.makeText(requireContext(), "Buton 1 tıklandı", Toast.LENGTH_SHORT).show()
-					1 -> Toast.makeText(requireContext(), "Buton 2 tıklandı", Toast.LENGTH_SHORT).show()
-					else -> Toast.makeText(requireContext(), "Buton $index tıklandı", Toast.LENGTH_SHORT).show()
+					0 -> uploadPage(requireView())
+
+
+					1 -> loginPage(requireView())
+
+					else -> Toast.makeText(
+						requireContext(),
+						"Buton $index tıklandı",
+						Toast.LENGTH_SHORT
+					).show()
 				}
 			}
 		}
+
 
 		binding.dragOverlay.setOnTouchListener(object : View.OnTouchListener {
 
@@ -66,7 +83,7 @@ class FeedFragment : Fragment() {
 
 			override fun onTouch(v: View, event: MotionEvent): Boolean {
 				println("dragoverlay")
-				when(event.actionMasked) {
+				when (event.actionMasked) {
 
 					MotionEvent.ACTION_DOWN -> {
 						lastRawX = event.rawX
@@ -74,11 +91,12 @@ class FeedFragment : Fragment() {
 						isDragging = false
 						return true
 					}
+
 					MotionEvent.ACTION_MOVE -> {
 						val dx = event.rawX - lastRawX
 						val dy = event.rawY - lastRawY
 
-						if (dx*dx + dy*dy > 16) {  // hareket eşiği
+						if (dx * dx + dy * dy > 16) {  // hareket eşiği
 							isDragging = true
 							val newX = (binding.dragContainer.x + dx).coerceIn(edgePadding, maxX)
 							val newY = (binding.dragContainer.y + dy).coerceIn(edgePadding, maxY)
@@ -90,6 +108,7 @@ class FeedFragment : Fragment() {
 						}
 						return true
 					}
+
 					MotionEvent.ACTION_UP -> {
 						if (!isDragging) {
 							// Tıklama ise menüyü aç/kapa
@@ -103,6 +122,7 @@ class FeedFragment : Fragment() {
 						}
 						return true
 					}
+
 					else -> return false
 				}
 			}
