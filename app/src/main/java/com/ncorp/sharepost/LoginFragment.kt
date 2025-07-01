@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.ncorp.sharepost.databinding.FragmentLoginBinding
 
 
@@ -39,9 +40,12 @@ class LoginFragment : Fragment() {
 	fun loginOl(view: View){
 		println("Giriş Yap Tıklandı")
 
+
 	}
 	fun kayitOl(view: View){
 		println("Kayıt Ol Tıklandı")
+		val action=LoginFragmentDirections.actionLoginFragmentToFeedFragment()
+		Navigation.findNavController(view).navigate(action)
 
 	}
 

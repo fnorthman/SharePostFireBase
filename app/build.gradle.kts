@@ -41,6 +41,8 @@ android {
 }
 
 dependencies {
+	implementation(libs.androidx.fragment)
+	implementation(libs.androidx.recyclerview)
 	val nav_version = "2.9.0"
 
 	// Views/Fragments integration
@@ -55,6 +57,9 @@ dependencies {
 	implementation("com.google.firebase:firebase-storage")
 	//Picasso
 	implementation("com.squareup.picasso:picasso:2.8")
+
+
+	implementation("com.ramotion.circlemenu:circle-menu:0.3.2")
 
 
 	implementation(libs.androidx.appcompat)

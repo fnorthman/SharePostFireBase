@@ -1,0 +1,26 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Dış çizgi (stroke) -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#00FFFFFF" /> <!-- Şeffaf iç -->
+            <stroke
+                android:width="2dp"
+                android:color="#33000000" /> <!-- Daha yumuşak siyah -->
+        </shape>
+    </item>
+
+    <!-- İç dolgu (soft gradient fill) -->
+    <item android:top="2dp" android:bottom="2dp" android:left="2dp" android:right="2dp">
+        <shape android:shape="oval">
+            <gradient
+                android:startColor="#FFFFFFFF"
+                android:centerColor="#FFE6F3"
+                android:endColor="#FFB6E6"
+                android:angle="270"
+                android:type="radial"
+                android:useLevel="false" />
+        </shape>
+    </item>
+
+</layer-list>

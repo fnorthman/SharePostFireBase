@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="CircleMenu">
+        <attr name="menu_items" format="reference" />
+        <attr name="menu_background_color" format="color" />
+        <attr name="menu_icon_color" format="color" />
+        <attr name="menu_icon" format="reference" />
+    </declare-styleable>
+</resources>
