@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "607482033816",
+    "project_id": "sharepost-aa764",
+    "storage_bucket": "sharepost-aa764.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607482033816:android:44d139b902a0fc23a642ed",
+        "android_client_info": {
+          "package_name": "com.ncorp.sharepost"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpOHMnMcakDmfYaq8t4h4841s6VEbrpfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
