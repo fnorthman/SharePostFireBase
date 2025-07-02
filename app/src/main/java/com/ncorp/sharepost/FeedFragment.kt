@@ -8,14 +8,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ncorp.sharepost.databinding.FragmentFeedBinding
 import com.ramotion.circlemenu.CircleMenuView
-import kotlin.math.log
 
 class FeedFragment : Fragment() {
 
 	private var _binding: FragmentFeedBinding? = null
 	private val binding get() = _binding!!
+
+	private lateinit var auth: FirebaseAuth
 
 	private var isMenuOpen = false
 
@@ -23,13 +27,23 @@ class FeedFragment : Fragment() {
 	private var maxY = 0f
 	private val edgePadding = 16f  // dp cinsinden kenar boşluğu, istersen dp->px dönüştür
 
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		auth = Firebase.auth
+
+	}
+
+
 	override fun onCreateView(
+
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		savedInstanceState: Bundle?
 	): View {
 		_binding = FragmentFeedBinding.inflate(inflater, container, false)
 		return binding.root
+
+
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,12 +52,13 @@ class FeedFragment : Fragment() {
 		/*binding.dragContainer.setOnClickListener { println("dragcontainer") }
 		binding.dragOverlay.setOnClickListener { println("dragoverlay") }*/
 
-		fun uploadPage(view: View){
-			val action=FeedFragmentDirections.actionFeedFragmentToUploadFragment()
+		fun uploadPage(view: View) {
+			val action = FeedFragmentDirections.actionFeedFragmentToUploadFragment()
 			Navigation.findNavController(view).navigate(action)
 		}
-		fun loginPage(view: View){
-			val action=FeedFragmentDirections.actionFeedFragmentToLoginFragment()
+
+		fun loginPage(view: View) {
+			val action = FeedFragmentDirections.actionFeedFragmentToLoginFragment()
 			Navigation.findNavController(view).navigate(action)
 		}
 		binding.root.post {
@@ -58,17 +73,13 @@ class FeedFragment : Fragment() {
 
 		binding.circleMenu.eventListener = object : CircleMenuView.EventListener() {
 			override fun onButtonClickAnimationEnd(view: CircleMenuView, index: Int) {
-				when (index) {
-					0 -> uploadPage(requireView())
+				if (index == 1) {
+					auth.signOut()
+					loginPage(requireView())
 
-
-					1 -> loginPage(requireView())
-
-					else -> Toast.makeText(
-						requireContext(),
-						"Buton $index tıklandı",
-						Toast.LENGTH_SHORT
-					).show()
+				}
+				if (index == 2) {
+					uploadPage(requireView())
 				}
 			}
 		}

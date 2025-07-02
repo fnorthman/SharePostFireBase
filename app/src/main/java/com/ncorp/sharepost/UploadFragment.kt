@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.ncorp.sharepost.databinding.FragmentLoginBinding
 import com.ncorp.sharepost.databinding.FragmentUploadBinding
 
@@ -27,10 +28,16 @@ class UploadFragment : Fragment() {
 		_binding = FragmentUploadBinding.inflate(inflater, container, false)
 		val view = binding.root
 		return view
+
+
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+		binding.cancelButton.setOnClickListener {
+			val action = UploadFragmentDirections.actionUploadFragmentToFeedFragment()
+			Navigation.findNavController(view).navigate(action)
+		}
 	}
 
 	override fun onDestroyView() {
