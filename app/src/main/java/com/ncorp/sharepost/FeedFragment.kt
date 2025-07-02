@@ -78,7 +78,7 @@ class FeedFragment : Fragment() {
 					loginPage(requireView())
 
 				}
-				if (index == 2) {
+				if (index == 0) {
 					uploadPage(requireView())
 				}
 			}
