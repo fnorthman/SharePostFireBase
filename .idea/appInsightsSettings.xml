@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.ncorp.sharepost" />
-                  <option name="mobileSdkAppId" value="1:607482033816:android:44d139b902a0fc23a642ed" />
-                  <option name="projectId" value="sharepost-aa764" />
-                  <option name="projectNumber" value="607482033816" />
+                  <option name="mobileSdkAppId" value="1:590867149897:android:ec4fdb460dbda5e37f7b98" />
+                  <option name="projectId" value="sharepost-46e6a" />
+                  <option name="projectNumber" value="590867149897" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

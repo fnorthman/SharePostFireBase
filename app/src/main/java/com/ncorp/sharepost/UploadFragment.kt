@@ -5,14 +5,13 @@ import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
-import com.ncorp.sharepost.databinding.FragmentLoginBinding
 import com.ncorp.sharepost.databinding.FragmentUploadBinding
 
 
@@ -65,6 +64,7 @@ class UploadFragment : Fragment() {
 		binding.imagePreview.setOnClickListener {
 			pickImageLauncher.launch("image/*")
 		}
+		binding.uploadButton.setOnClickListener { uploadButton(it) }
 	}
 
 	fun uploadButton(view: View) {
@@ -73,7 +73,7 @@ class UploadFragment : Fragment() {
 
 	override fun onDestroyView() {
 		super.onDestroyView()
-		_binding=null
+		_binding = null
 	}
 
 

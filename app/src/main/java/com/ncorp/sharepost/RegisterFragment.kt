@@ -109,7 +109,7 @@ class RegisterFragment : Fragment() {
 		// Firebase ile kayıt işlemi
 		auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
 			if (task.isSuccessful) {
-				val action = LoginFragmentDirections.actionLoginFragmentToFeedFragment()
+				val action = RegisterFragmentDirections.actionRegisterFragmentToFeedFragment()
 				Navigation.findNavController(view).navigate(action)
 			}
 		}.addOnFailureListener { exception ->
